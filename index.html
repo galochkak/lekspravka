@@ -1,268 +1,41 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ЛекСправка — поиск лекарств и аналогов</title>
-
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HVKXVNZCQV"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-HVKXVNZCQV', {
-      anonymize_ip: true,
-      cookie_flags: 'SameSite=None;Secure'
-    });
-  </script>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ЛекСправка</title>
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      padding: 16px;
-      max-width: 920px;
-      margin: 0 auto;
-      background-color: #f8fcff;
-      color: #2c3e50;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    header img {
-      width: 70px;
-      height: auto;
-      margin-bottom: 10px;
-    }
-    h1 {
-      color: #1a5fb4;
-      font-size: 1.8em;
-      margin: 0;
-    }
-    .disclaimer {
-      background-color: #fff8e1;
-      border-left: 4px solid #ffc107;
-      padding: 18px;
-      margin: 20px 0;
-      border-radius: 10px;
-      font-size: 0.92em;
-      line-height: 1.5;
-    }
-    .disclaimer strong {
-      color: #d32f2f;
-    }
-    .btn {
-      padding: 12px 24px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    #agreeBtn {
-      background-color: #1a5fb4;
-      color: white;
-    }
-    #agreeBtn:hover {
-      background-color: #134a91;
-    }
-    #compareBtn {
-      background: linear-gradient(to right, #2196f3, #1a5fb4);
-      color: white;
-      margin: 20px 0;
-      padding: 14px 28px;
-      font-size: 18px;
-      box-shadow: 0 4px 8px rgba(26, 95, 180, 0.3);
-    }
-    #compareBtn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(26, 95, 180, 0.4);
-    }
-    input {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin: 16px 0;
-      box-sizing: border-box;
-    }
-    .drug {
-      background: white;
-      border: 1px solid #dde5f0;
-      padding: 14px;
-      margin: 12px 0;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-    .drug label {
-      display: flex;
-      align-items: flex-start;
-      cursor: pointer;
-    }
-    .drug i {
-      margin-right: 10px;
-      color: #1a5fb4;
-      font-size: 18px;
-      margin-top: 4px;
-    }
-    .hidden {
-      display: none;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 24px 0;
-      background: white;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-      border-radius: 10px;
-      overflow: hidden;
-      font-size: 0.9em;
-      table-layout: fixed;
-    }
-    th, td {
-      border: 1px solid #e0e8f1;
-      padding: 12px;
-      text-align: left;
-      word-wrap: break-word;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    th {
-      background-color: #e8f0fe;
-      font-weight: 600;
-      width: 150px;
-    }
-    td {
-      width: 190px;
-    }
-    footer {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid #eee;
-      font-size: 0.85em;
-      color: #666;
-      text-align: center;
-    }
-    .grls-link {
-      font-size: 0.85em;
-      color: #1a5fb4;
-      text-decoration: none;
-    }
-    .grls-link:hover {
-      text-decoration: underline;
-    }
-    .feedback-form {
-      margin: 30px 0 0 0;
-      padding: 16px;
-      background: #f9f9f9;
-      border-radius: 8px;
-      border: 1px solid #eee;
-    }
-    .feedback-form input,
-    .feedback-form textarea {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      margin-bottom: 12px;
-      box-sizing: border-box;
-    }
-    .feedback-form label {
-      display: block;
-      margin-bottom: 4px;
-      font-weight: 500;
-    }
+    body { font-family: Arial; padding: 15px; }
+    input { width: 100%; padding: 10px; margin: 10px 0; }
+    .drug { border: 1px solid #ccc; padding: 10px; margin: 8px 0; }
+    button { padding: 10px 20px; margin: 10px 0; }
   </style>
 </head>
 <body>
-  <header>
-    <img src="doctor.png" alt="Доктор Пилюлькин" onerror="this.style.display='none'">
-    <h1><i class="fas fa-pills"></i> ЛекСправка</h1>
-    <p>Найдите лекарство и его законные аналоги по действующему веществу</p>
-  </header>
+  <h2>ЛекСправка</h2>
+  <input type="text" id="search" placeholder="Ибупрофен, Нурофен...">
 
-  <div id="disclaimer" class="disclaimer">
-    <strong>⚠️ Внимание:</strong><br>
-    Это <strong>справочная информация</strong>, основанная на данных Государственного реестра лекарственных средств (ГРЛС).<br><br>
-    Приложение <strong>НЕ даёт медицинских рекомендаций</strong> и <strong>НЕ заменяет врача</strong>.<br>
-    Перед приёмом любого лекарства <strong>обязательно проконсультируйтесь с врачом</strong>.<br><br>
-    Авторы не несут ответственности за последствия самостоятельного выбора или замены препаратов.
-  </div>
-
-  <button id="agreeBtn" class="btn">Я понимаю и принимаю условия</button>
-
-  <div id="app" class="hidden">
-    <input type="text" id="search" placeholder="Введите торговое название или МНН (например: Ибупрофен, Нурофен)" autocomplete="off" />
-
-    <div id="results"></div>
-    
-    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
-      <button id="compareBtn" class="btn" disabled>Сравнить</button>
-      <small style="color: #666;">(можно выбрать 2–3 препарата)</small>
-    </div>
-
-    <div id="comparison"></div>
-
-    <!-- Форма обратной связи -->
-    <div class="feedback-form">
-      <h3>📨 Обратная связь</h3>
-      <form action="https://formspree.io/f/xrbyjwdp" method="POST">
-        <label for="email">Ваш email (необязательно):</label>
-        <input type="email" id="email" name="email" placeholder="user@example.com">
-
-        <label for="message">Сообщение:</label>
-        <textarea id="message" name="message" rows="4" placeholder="Нашли ошибку? Хотите предложить улучшение?"></textarea>
-
-        <button type="submit" class="btn" style="font-size: 16px; padding: 10px 20px;">
-          Отправить
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <footer>
-    Данные из ГРЛС. Актуально на <span id="current-date"></span><br>
-    <small>Мы используем анонимную статистику для улучшения сервиса. Никакие личные данные не определяются.</small>
-  </footer>
+  <div id="results"></div>
+  <button id="compareBtn" disabled>Сравнить</button>
+  <div id="comparison"></div>
 
   <script>
-    // Автоматическая дата
-    const now = new Date();
-    const day = String(now.getDate()).padStart(2, '0');
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const year = now.getFullYear();
-    document.getElementById('current-date').textContent = `${day}.${month}.${year}`;
-
     let allDrugs = [];
     let selectedDrugs = [];
 
-    document.getElementById('agreeBtn').addEventListener('click', () => {
-      document.getElementById('disclaimer').classList.add('hidden');
-      document.getElementById('agreeBtn').classList.add('hidden');
-      document.getElementById('app').classList.remove('hidden');
-      document.getElementById('search').focus();
-    });
-
     fetch('drugs.json')
       .then(res => res.json())
-      .then(drugs => {
-        allDrugs = drugs;
+      .then(data => {
+        allDrugs = data;
       })
       .catch(err => {
-        document.getElementById('results').innerHTML = 
-          `<p style="color:red">❌ Ошибка загрузки данных: ${err.message}</p>`;
+        document.getElementById('results').innerHTML = `<p>❌ Ошибка: ${err.message}</p>`;
       });
 
     document.getElementById('search').addEventListener('input', e => {
-      const q = e.target.value.trim().toLowerCase();
+      const q = e.target.value.toLowerCase();
       if (!q) {
-        document.getElementById('results').innerHTML = '<p>Введите название или МНН для поиска...</p>';
-        document.getElementById('compareBtn').disabled = true;
-        selectedDrugs = [];
+        document.getElementById('results').innerHTML = '<p>Введите запрос...</p>';
         return;
       }
       const filtered = allDrugs.filter(d =>
@@ -274,79 +47,26 @@
 
     function displayDrugs(list) {
       const container = document.getElementById('results');
-      if (list.length === 0) {
-        container.innerHTML = '<p>Ничего не найдено</p>';
-        document.getElementById('compareBtn').disabled = true;
-        return;
-      }
-
-      container.innerHTML = list.map((d, idx) => 
+      container.innerHTML = list.map((d, i) =>
         `<div class="drug">
           <label>
-            <input type="checkbox" data-index="${idx}" onchange="toggleSelection(${idx}, this.checked)">
-            <i class="fas fa-capsules"></i>
-            <div>
-              <strong>${d.trade_name || '—'}</strong><br>
-              <small>МНН: ${d.mnn || '—'} • ${d.form || '—'}, ${d.dosage || ''}</small><br>
-              <small>Производитель: ${d.producer || '—'}</small><br>
-              <small>
-                <strong>Рег. №:</strong> ${d.reg_number || '—'}<br>
-                <a href="https://grls.rosminzdrav.ru/#!/GrlsList" target="_blank" class="grls-link">
-                  🔍 Проверить в ГРЛС
-                </a>
-              </small>
-            </div>
+            <input type="checkbox" onchange="toggle(${i}, this.checked)">
+            ${d.trade_name} — ${d.mnn}
           </label>
         </div>`
       ).join('');
-
-      document.getElementById('compareBtn').disabled = true;
     }
 
-    window.toggleSelection = function(idx, checked) {
+    window.toggle = (idx, checked) => {
       const drug = allDrugs[idx];
-      if (checked) {
-        selectedDrugs.push(drug);
-      } else {
-        selectedDrugs = selectedDrugs.filter(d => d !== drug);
-      }
-      const btn = document.getElementById('compareBtn');
-      btn.disabled = !(selectedDrugs.length >= 2 && selectedDrugs.length <= 3);
+      if (checked) selectedDrugs.push(drug);
+      else selectedDrugs = selectedDrugs.filter(d => d !== drug);
+      document.getElementById('compareBtn').disabled = selectedDrugs.length < 2;
     };
 
     document.getElementById('compareBtn').addEventListener('click', () => {
-      if (selectedDrugs.length < 2) return;
-
-      const table = `
-        <h3><i class="fas fa-balance-scale"></i> Сравнение аналогов</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Параметр</th>
-              ${selectedDrugs.map(d => `<th>${d.trade_name}</th>`).join('')}
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td><strong>МНН</strong></td>${selectedDrugs.map(d => `<td>${d.mnn || '—'}</td>`).join('')}</tr>
-            <tr><td><strong>Форма</strong></td>${selectedDrugs.map(d => `<td>${d.form || '—'}</td>`).join('')}</tr>
-            <tr><td><strong>Дозировка</strong></td>${selectedDrugs.map(d => `<td>${d.dosage || '—'}</td>`).join('')}</tr>
-            <tr><td><strong>Производитель</strong></td>${selectedDrugs.map(d => `<td>${d.producer || '—'}</td>`).join('')}</tr>
-            <tr><td><strong>Страна</strong></td>${selectedDrugs.map(d => `<td>${d.country || '—'}</td>`).join('')}</tr>
-            <tr>
-              <td><strong>Рег. №</strong></td>
-              ${selectedDrugs.map(d => `
-                <td>
-                  ${d.reg_number || '—'}<br>
-                  <a href="https://grls.rosminzdrav.ru/#!/GrlsList" target="_blank" class="grls-link" style="font-size:0.8em;">
-                    🔍 ГРЛС
-                  </a>
-                </td>
-              `).join('')}
-            </tr>
-          </tbody>
-        </table>
-      `;
-      document.getElementById('comparison').innerHTML = table;
+      const names = selectedDrugs.map(d => d.trade_name).join(', ');
+      document.getElementById('comparison').innerHTML = `<p>✅ Сравниваем: ${names}</p>`;
     });
   </script>
 </body>
